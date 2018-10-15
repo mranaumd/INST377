@@ -5,11 +5,14 @@
 	div {
 		margin-bottom: 20px;
 	}
+    body
+    {
+        background-color: lightblue; 
+    }
 </style>
 
 <!-- Data -->
 <script>
-
 // Don't copy this to any other places in this file. You can just use the "organizations" variable to do your assignment. 
 var organizations = [
 	 {
@@ -200,13 +203,139 @@ var organizations = [
 
 <body>
 <!-- Feel free to add empty tags. Data shouldn't be here. -->
-	<div id="org_table"></div>
+	<div id="org_table">
+
+    <center>
+    <table id="tbl1"></table>
+    </center>
+    </div>  
 
 <script>
 // outputs the first item of the organizations array. Just for testing.
 console.log(organizations[0]); 
-
 // Your JavaScript code goes here
+
+var a = "Organization Type";
+
+//Storing Data
+var i = 0;
+var non_profits = 0;
+var org_less_than_ten = 0;
+var org_region = 0;
+var transportdata = 0;
+var it_sector = 0; 
+var present_year = (new Date()).getFullYear();
+
+
+
+//Looping through our data variable 'organizations'
+for (i = 0; i < organizations.length; i++)
+{
+    //Checking for non-profit organizations
+    if (organizations[i]["Organization Type"] == "Nonprofit")
+    {
+        console.log(organizations[i]["Organization"]);
+        non_profits++;
+    }
+
+    //Checking for Organizations found less than 10 Years ago
+    if (organizations[i]["Founding Year"])
+    {
+        var temp_int = parseInt(organizations[i]["Founding Year"]);
+        var difference = present_year - temp_int;
+
+        if (difference < 10)
+        {
+            org_less_than_ten++
+        }
+    }
+
+    //Checking for Organizations in NA Region 
+    if (organizations[i]["Region"] == "North America")
+    {
+        org_region++;
+    }
+
+    //Checking for Organizations that make the use of the Transportation Type of Data
+    if (organizations[i]["Type of Data Used"])
+    {
+        var temp = organizations[i]["Type of Data Used"];
+
+        var temp2 = temp.indexOf("Transportation");
+
+        if (temp2 != -1)
+        {
+            transportdata++; 
+        }
+    }
+
+    //For our fifth statistic, checking for the number Organizations operating in the Governance Sector
+    if(organizations[i]["Sectors"])
+    {
+        var temp3 = organizations[i]["Sectors"];
+      
+        var temp2 = temp3.indexOf("Governance");
+      
+        if (temp2 !== -1)
+        {
+            it_sector++;
+        }
+    }
+} 
+
+
+//Getting our Table bby using JS DOM Manipulations
+var tbl = document.getElementById("tbl1");
+
+//Creating the table headers
+var header = tbl.createTHead();
+
+var row = header.insertRow(0);
+var cell = row.insertCell(0);
+cell.innerHTML = "<b>Questions<b>"
+
+var cell2 = row.insertCell(1);
+cell2.innerHTML = "<b>Results<b>"
+
+//Inserting the first row in the table
+var row1 = tbl.insertRow(1);
+var non_profit1 = row1.insertCell(0);
+var data_non_profit = row1.insertCell(1);
+
+non_profit1.innerHTML = "Non Profit Organizations";
+data_non_profit.innerHTML = non_profits; 
+
+//Inserting the second row in the table
+var row2 = tbl.insertRow(2);
+var label2=row2.insertCell(0);
+var data2=row2.insertCell(1);
+
+label2.innerHTML="Org < 10 years old";
+data2.innerHTML=org_less_than_ten;
+
+//Inserting the third row in the table
+var row3=tbl.insertRow(3);
+var label3=row3.insertCell(0);
+var data3=row3.insertCell(1);
+
+label3.innerHTML="North America region";
+data3.innerHTML=org_region;
+
+//Inserting fourth row in the table
+var row4=tbl.insertRow(4);
+var label4=row4.insertCell(0);
+var data4=row4.insertCell(1);
+
+label4.innerHTML="Transportation Data";
+data4.innerHTML=transportdata;
+
+//Inserting the fifth row in the table
+var row5=tbl.insertRow(5);
+var label5=row5.insertCell(0);
+var data5=row5.insertCell(1);
+
+label5.innerHTML="Governance";
+data5.innerHTML=it_sector;
 
 
 </script>
